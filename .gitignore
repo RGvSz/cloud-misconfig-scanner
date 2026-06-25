@@ -1,0 +1,7 @@
+*.csv
+*.json
+.aws/
+__pycache__/
+*.pyc
+report_*.json
+credentials.txt
