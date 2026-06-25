@@ -1,11 +1,11 @@
 import boto3
 import json
-from datetime import datetime
 from s3_scanner import scan_s3
 from iam_scanner import scan_iam
 from ec2_scanner import scan_ec2
 from risk_scorer import run_scoring
 from datetime import datetime, timezone
+from report_generator import generate_html_report
 
 def generate_report(s3_findings, iam_findings, ec2_findings, flat_findings, risk_score):
     report = {
@@ -30,6 +30,8 @@ def generate_report(s3_findings, iam_findings, ec2_findings, flat_findings, risk
 
     return report, filename
 
+
+
 def main():
     print("=" * 50)
     print("  Cloud Misconfiguration Scanner")
@@ -44,7 +46,8 @@ def main():
     flat_findings, risk_score = run_scoring(s3_findings, iam_findings, ec2_findings)
 
     report, filename = generate_report(s3_findings, iam_findings, ec2_findings, flat_findings, risk_score)
-
+    html_file = generate_html_report(s3_findings, iam_findings, ec2_findings, flat_findings, risk_score)
+    print(f"  HTML Report     : {html_file}")
     print("\n" + "=" * 50)
     print("  SCAN COMPLETE")
     print("=" * 50)
